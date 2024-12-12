@@ -3,9 +3,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Entity,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
+@Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -14,24 +16,34 @@ export class User {
   email: string;
 
   @Exclude()
-  @Column()
-  password: string;
+  @Column({
+    nullable: true,
+  })
+  password?: string;
 
   @Column({ nullable: true })
-  firstName: string | null;
+  firstName?: string;
 
   @Column({ nullable: true })
-  lastName: string | null;
+  lastName?: string;
 
   @Column({ nullable: true })
-  profileImageUrl: string | null;
+  profileImageUrl?: string;
 
   @Column()
   lastLoginDate: Date;
 
   @Exclude()
   @Column({ nullable: true })
-  refreshToken: string;
+  refreshToken?: string;
+
+  @Exclude()
+  @Column({ nullable: true })
+  spotifyAccessToken?: string;
+
+  @Exclude()
+  @Column({ nullable: true })
+  spotifyRefreshToken?: string;
 
   @CreateDateColumn()
   createdAt: Date;
