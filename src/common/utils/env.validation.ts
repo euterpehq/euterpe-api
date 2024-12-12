@@ -6,6 +6,8 @@ import {
   Max,
   Min,
   validateSync,
+  MinLength,
+  MaxLength,
 } from 'class-validator';
 
 enum Environment {
@@ -25,6 +27,20 @@ class EnvironmentVariables {
   PORT: number;
 
   @IsString()
+  API_BASE_URL: string;
+
+  @IsString()
+  @MinLength(32)
+  @MaxLength(32)
+  ENCRYPTION_SECRET: string;
+
+  @IsString()
+  ACCESS_TOKEN_SECRET: string;
+
+  @IsString()
+  REFRESH_TOKEN_SECRET: string;
+
+  @IsString()
   DB_HOST: string;
 
   @IsNumber()
@@ -38,6 +54,15 @@ class EnvironmentVariables {
 
   @IsString()
   DB_NAME: string;
+
+  @IsString()
+  SPOTIFY_CLIENT_ID: string;
+
+  @IsString()
+  SPOTIFY_CLIENT_SECRET: string;
+
+  @IsString()
+  SPOTIFY_CALLBACK_URL: string;
 }
 
 export function validateEnv(config: Record<string, unknown>) {
@@ -51,5 +76,6 @@ export function validateEnv(config: Record<string, unknown>) {
   if (errors.length > 0) {
     throw new Error(errors.toString());
   }
+
   return validatedConfig;
 }
