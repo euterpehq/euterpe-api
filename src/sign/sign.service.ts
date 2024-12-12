@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Wallet } from 'ethers';
+import { Wallet, verifyMessage } from 'ethers';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -16,8 +16,7 @@ export class SignService {
     songId: string,
     songDuration: number,
     listenedDuration: number,
-    listenerId: string,
-  ): Promise<{ proof: string; isEligible: boolean }> {
+  ): Promise<{ signature: string; isEligible: boolean }> {
     const privateKey = process.env.PRIVATE_KEY;
 
     if (!privateKey) {
@@ -27,18 +26,26 @@ export class SignService {
     const isEligible = this.isSongFullyListened(songDuration, listenedDuration);
 
     if (!isEligible) {
-      return { proof: '', isEligible };
+      return { signature: '', isEligible };
     }
-    const proofPayload = {
-      listenerId,
-      songId,
-      timestamp: Date.now(),
-    };
-    const message = JSON.stringify(proofPayload);
+
+    const message = 'WE ARE ALL GONNA MAKE IT';
 
     const wallet = new Wallet(privateKey);
-    const proof = await wallet.signMessage(message);
+    const signature = await wallet.signMessage(message);
 
-    return { proof, isEligible };
+    return { signature, isEligible };
+  }
+
+  // message = 'Hello, Ethereum!';
+  // signature =
+  //   '0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b';
+
+  async verifySignature(proofPayload: string, signature: string) {
+    console.log('Message:', proofPayload); // Debugging line
+    console.log('Signature:', signature); // Debugging line
+
+    const signerAddress = verifyMessage(proofPayload, signature);
+    return signerAddress;
   }
 }

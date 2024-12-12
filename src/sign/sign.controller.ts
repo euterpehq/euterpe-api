@@ -1,12 +1,15 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Public } from '@/auth/decorators/public.decorator';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { SignService } from './sign.service';
 
 @Controller('sign')
 export class SignController {
   constructor(private readonly signService: SignService) {}
 
-  @Post('/verify')
-  async verifyAndsignRewardProof(
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('/generate')
+  async generateRewardProof(
     @Body()
     body: {
       songId: string;
@@ -14,13 +17,20 @@ export class SignController {
       listenedDuration: number;
       listenerId: string;
     },
-  ) {
-    const { songId, songDuration, listenedDuration, listenerId } = body;
+  ): Promise<{ signature: string; isEligible: boolean }> {
+    const { songId, songDuration, listenedDuration } = body;
     return this.signService.verifyAndSignReward(
       songId,
       songDuration,
       listenedDuration,
-      listenerId,
     );
+  }
+
+  @Public()
+  @Post('/verify')
+  async verifySignature(
+    @Body() input: { message: string; signature: string },
+  ): Promise<string> {
+    return this.signService.verifySignature(input.message, input.signature);
   }
 }
