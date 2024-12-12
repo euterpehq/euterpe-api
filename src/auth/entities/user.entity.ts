@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
+  Index,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
@@ -12,6 +13,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index()
   @Column({ unique: true })
   email: string;
 
@@ -33,6 +35,7 @@ export class User {
   @Column()
   lastLoginDate: Date;
 
+  @Index()
   @Exclude()
   @Column({ nullable: true })
   refreshToken?: string;
@@ -45,9 +48,11 @@ export class User {
   @Column({ nullable: true })
   spotifyRefreshToken?: string;
 
+  @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 }

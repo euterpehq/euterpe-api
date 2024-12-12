@@ -7,6 +7,7 @@ import { UserService } from '@/auth/services';
 import { EmailSignInDto, EmailSignupDto } from '@/auth/dtos/email-auth.dto';
 import { AuthRequest } from '@/common/types';
 import { RefreshTokenDto } from '@/auth/dtos/refresh-token.dto';
+import { PublicUserDto } from '@/auth/dtos/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -54,7 +55,7 @@ export class AuthController {
   }
 
   @Get('/me')
-  async profile(@Req() req: AuthRequest) {
+  async profile(@Req() req: AuthRequest): Promise<PublicUserDto> {
     return req.user;
   }
 }
