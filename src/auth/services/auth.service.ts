@@ -2,7 +2,11 @@ import { UserService } from '@/auth/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@/auth/entities';
 import { AuthSignInResponse } from '@/auth/dtos/auth-response.dto';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Profile } from 'passport-spotify';
 import { BaseService } from '@/common/service/base.service';
 import { CipherService } from '@/lib/services/crypto.service';
@@ -35,14 +39,23 @@ export class AuthService extends BaseService {
       email: user.email,
     };
 
+    const tokens = await this.#getTokens(payload);
+
+    const lastLoginDate = new Date();
+
+    await this.userService.db.update(user.id, {
+      refreshToken: tokens.refreshToken,
+      lastLoginDate,
+    });
+
     return {
       user: {
         id: user.id,
         email: user.email,
         profileImageUrl: user.profileImageUrl,
-        lastLoginDate: user.lastLoginDate,
+        lastLoginDate,
       },
-      ...(await this.#getTokens(payload)),
+      ...tokens,
     };
   }
 
@@ -91,5 +104,69 @@ export class AuthService extends BaseService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async refreshToken(refreshToken: string): Promise<AuthSignInResponse> {
+    const payload = this.jwtService.verify(refreshToken, {
+      secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
+    });
+
+    const user = await this.userService.db.findOneBy({ id: payload.sub });
+
+    if (!user) throw new UnauthorizedException();
+
+    return this.generateToken(user);
+  }
+
+  async emailSignUp(input: {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+    profileImageUrl?: string;
+  }): Promise<AuthSignInResponse> {
+    const existingUser = await this.userService.db.findOneBy({
+      email: input.email,
+    });
+    if (existingUser) {
+      throw new BadRequestException('User already exists');
+    }
+
+    const { password, ...rest } = input;
+
+    const hashedPassword = await this.cipherService.hashInput(password);
+    const newUser = this.userService.db.create({
+      ...rest,
+      password: hashedPassword,
+      lastLoginDate: new Date(),
+    });
+
+    await this.userService.db.save(newUser);
+
+    return this.generateToken(newUser);
+  }
+
+  async emailSignIn(input: {
+    email: string;
+    password: string;
+  }): Promise<AuthSignInResponse> {
+    const { email, password } = input;
+
+    const user = await this.userService.db.findOneBy({ email });
+
+    if (!user || !user.password) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await this.checkPassword({
+      password,
+      hashedPassword: user.password,
+    });
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    return this.generateToken(user);
   }
 }

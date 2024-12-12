@@ -35,6 +35,12 @@ class EnvironmentVariables {
   ENCRYPTION_SECRET: string;
 
   @IsString()
+  ACCESS_TOKEN_SECRET: string;
+
+  @IsString()
+  REFRESH_TOKEN_SECRET: string;
+
+  @IsString()
   DB_HOST: string;
 
   @IsNumber()
