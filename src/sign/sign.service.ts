@@ -37,10 +37,6 @@ export class SignService {
     return { signature, isEligible };
   }
 
-  // message = 'Hello, Ethereum!';
-  // signature =
-  //   '0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b';
-
   async verifySignature(proofPayload: string, signature: string) {
     console.log('Message:', proofPayload); // Debugging line
     console.log('Signature:', signature); // Debugging line
