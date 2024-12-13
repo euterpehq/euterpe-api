@@ -56,6 +56,9 @@ class EnvironmentVariables {
   DB_NAME: string;
 
   @IsString()
+  DB_CA: string;
+
+  @IsString()
   SPOTIFY_CLIENT_ID: string;
 
   @IsString()
