@@ -9,6 +9,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('audios')
 export class Audio {
@@ -48,6 +49,7 @@ export class Audio {
   @Column({ type: 'simple-array', nullable: true })
   genres: string[];
 
+  @ApiHideProperty()
   @Exclude()
   @CreateDateColumn()
   createdAt: Date;

@@ -5,14 +5,12 @@ import { AuthSignInResponse } from '@/auth/dtos/auth-response.dto';
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Profile } from 'passport-spotify';
 import { BaseService } from '@/common/service/base.service';
 import { CipherService } from '@/lib/services/crypto.service';
 import { ConfigService } from '@nestjs/config';
-import { ExchangeSpotifyTokenDto } from '@/auth/dtos/spotify.dto';
 import { HttpService } from '@/lib/services/http.service';
 
 @Injectable()
