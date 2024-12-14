@@ -15,7 +15,6 @@ import { EmailSignInDto, EmailSignupDto } from '@/auth/dtos/email-auth.dto';
 import { AuthRequest } from '@/common/types';
 import { RefreshTokenDto } from '@/auth/dtos/refresh-token.dto';
 import { PublicUserDto } from '@/auth/dtos/user.dto';
-import { ExchangeSpotifyTokenDto } from '@/auth/dtos/spotify.dto';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 
