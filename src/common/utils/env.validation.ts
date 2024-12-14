@@ -36,6 +36,9 @@ class EnvironmentVariables {
   ENCRYPTION_SECRET: string;
 
   @IsString()
+  ARTIST_APP_BASE_URL: string;
+
+  @IsString()
   ACCESS_TOKEN_SECRET: string;
 
   @IsString()

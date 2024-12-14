@@ -1,19 +1,28 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from '@/auth/services/auth.service';
 import { Public } from '@/auth/decorators/public.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthSignInResponse } from '@/auth/dtos/auth-response.dto';
-import { UserService } from '@/auth/services';
 import { EmailSignInDto, EmailSignupDto } from '@/auth/dtos/email-auth.dto';
 import { AuthRequest } from '@/common/types';
 import { RefreshTokenDto } from '@/auth/dtos/refresh-token.dto';
 import { PublicUserDto } from '@/auth/dtos/user.dto';
+import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Public()
@@ -24,10 +33,20 @@ export class AuthController {
   @Public()
   @Get('callback/spotify')
   @UseGuards(AuthGuard('spotify'))
-  async spotifyCallback(@Req() req: any): Promise<AuthSignInResponse> {
+  async spotifyCallback(@Req() req: any, @Res() res: Response) {
     const user = req.user;
 
-    return await this.authService.generateToken(user);
+    const token = await this.authService.generateToken(user);
+
+    const redirectUrl =
+      this.configService.get<string>('ARTIST_APP_BASE_URL') || '';
+
+    const accessToken = encodeURIComponent(token.accessToken);
+    const refreshToken = encodeURIComponent(token.refreshToken);
+
+    return res.redirect(
+      `${redirectUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}`,
+    );
   }
 
   @Public()
