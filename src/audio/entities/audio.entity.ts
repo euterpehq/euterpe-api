@@ -10,6 +10,8 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { AudioGroup } from '@/audio/entities/audio-group.entity';
+import { Artist } from '@/artist/entities/artist.entity';
 
 @Entity('audios')
 export class Audio {
@@ -22,17 +24,14 @@ export class Audio {
   @Column()
   title: string;
 
-  @Column()
-  artist: string;
-
   @Column('simple-array')
   featuredArtists: string[];
 
-  @Column()
-  album: string;
-
-  @Column({ nullable: true })
-  albumCoverUrl: string;
+  // @Column()
+  // album: string;
+  //
+  // @Column({ nullable: true })
+  // albumCoverUrl: string;
 
   @Column({ nullable: true })
   releaseDate: string;
@@ -61,6 +60,11 @@ export class Audio {
   @DeleteDateColumn({ nullable: true })
   deletedAt: Date | null;
 
-  @ManyToOne(() => Audio, (audio) => audio.user)
-  user: User;
+  @ApiHideProperty()
+  @ManyToOne(() => Artist, (a) => a.audios)
+  artist: Artist;
+
+  @ApiHideProperty()
+  @ManyToOne(() => AudioGroup, (g) => g.audios)
+  audioGroup: AudioGroup;
 }

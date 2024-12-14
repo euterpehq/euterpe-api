@@ -3,14 +3,17 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  JoinColumn,
   JoinTable,
   ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Artist } from '@/artist/entities/artist.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { Audio } from '@/audio/entities/audio.entity';
 
 export enum GroupType {
   Single = 'single',
@@ -60,6 +63,10 @@ export class AudioGroup {
   @ManyToOne(() => Artist, (artist) => artist.audioGroups)
   @JoinTable()
   artist: Artist;
+
+  @OneToMany(() => Audio, (a) => a.audioGroup, { cascade: false })
+  @JoinColumn()
+  audios: Audio;
 
   constructor(partial: Partial<AudioGroup>) {
     Object.assign(this, partial);
