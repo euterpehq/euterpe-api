@@ -54,6 +54,7 @@ export class AuthService extends BaseService {
         email: user.email,
         profileImageUrl: user.profileImageUrl,
         lastLoginDate,
+        artist: user.artist,
       },
       ...tokens,
     };
@@ -152,7 +153,12 @@ export class AuthService extends BaseService {
   }): Promise<AuthSignInResponse> {
     const { email, password } = input;
 
-    const user = await this.userService.db.findOneBy({ email });
+    const user = await this.userService.db.findOne({
+      where: {
+        email,
+      },
+      relations: ['artist'],
+    });
 
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid credentials');

@@ -1,12 +1,15 @@
 import {
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Artist } from '@/artist/entities/artist.entity';
 
 @Entity()
 export class User {
@@ -55,4 +58,11 @@ export class User {
   @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => Artist, (artist) => artist.user, {
+    cascade: true,
+    nullable: true,
+  })
+  @JoinColumn()
+  artist?: Artist;
 }
