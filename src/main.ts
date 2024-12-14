@@ -5,7 +5,11 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: '*',
+    },
+  });
   const config = new DocumentBuilder()
     .setTitle('Euterpe API')
     .setDescription(

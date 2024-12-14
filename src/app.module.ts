@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { SignModule } from './sign/sign.module';
 import { LibModule } from './lib/lib.module';
+import { AudioModule } from './audio/audio.module';
 import typeorm from '@/config/typeorm';
 
 @Module({
@@ -25,6 +26,7 @@ import typeorm from '@/config/typeorm';
     AuthModule,
     SignModule,
     LibModule,
+    AudioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

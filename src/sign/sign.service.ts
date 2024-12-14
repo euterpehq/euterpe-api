@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Wallet, verifyMessage } from 'ethers';
-import * as dotenv from 'dotenv';
 
-dotenv.config();
+import { ConfigService } from '@nestjs/config';
+import { BaseService } from '@/common/service/base.service';
+
 @Injectable()
-export class SignService {
+export class SignService extends BaseService {
+  constructor(private configService: ConfigService) {
+    super();
+  }
+
   private isSongFullyListened(
     songDuration: number,
     listenedDuration: number,
@@ -17,10 +22,10 @@ export class SignService {
     songDuration: number,
     listenedDuration: number,
   ): Promise<{ signature: string; isEligible: boolean }> {
-    const privateKey = process.env.PRIVATE_KEY;
+    const privateKey = this.configService.get<string>('PRIVATE_KEY');
 
     if (!privateKey) {
-      throw new Error('Private key is not configured');
+      throw new InternalServerErrorException('Private key is not configured');
     }
 
     const isEligible = this.isSongFullyListened(songDuration, listenedDuration);
@@ -29,7 +34,7 @@ export class SignService {
       return { signature: '', isEligible };
     }
 
-    const message = 'WE ARE ALL GONNA MAKE IT';
+    const message = this.configService.get<string>('SIGNING_MESSAGE') || '';
 
     const wallet = new Wallet(privateKey);
     const signature = await wallet.signMessage(message);
@@ -38,8 +43,8 @@ export class SignService {
   }
 
   async verifySignature(proofPayload: string, signature: string) {
-    console.log('Message:', proofPayload); // Debugging line
-    console.log('Signature:', signature); // Debugging line
+    this.logger.debug('Message:', proofPayload); // Debugging line
+    this.logger.debug('Signature:', signature); // Debugging line
 
     const signerAddress = verifyMessage(proofPayload, signature);
     return signerAddress;
