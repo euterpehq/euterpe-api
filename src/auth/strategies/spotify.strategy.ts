@@ -3,7 +3,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-spotify';
 import { AuthService } from '@/auth/services/auth.service';
 import { ConfigService } from '@nestjs/config';
-import logger from '@/common/utils/logger';
 
 @Injectable()
 export class SpotifyStrategy extends PassportStrategy(Strategy, 'spotify') {
