@@ -36,20 +36,17 @@ export class Audio {
   @Column({ nullable: true })
   releaseDate: string;
 
-  @Column({ type: 'float', default: 0 })
+  @Column({ type: 'int', default: 0 })
   durationInSeconds: number;
 
   @Column({ type: 'float', default: 0 })
   popularity: number;
 
-  @Column({ type: 'float', default: 0 })
+  @Column({ type: 'boolean', default: false })
   explicit: boolean;
 
   @Column({ type: 'simple-array', nullable: true })
   genres: string[];
-
-  @Column({ type: 'int' })
-  songLength: number;
 
   @Exclude()
   @CreateDateColumn()
