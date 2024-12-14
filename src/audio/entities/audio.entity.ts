@@ -6,24 +6,26 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity('audios')
 export class Audio {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ unique: true })
-  spotifyId: string; // Unique ID assigned by Spotify (e.g., "4uLU6hMCjMI75M1A2tKUQC")
+  spotifyId: string;
 
   @Column()
-  title: string; // Title of the song
+  title: string;
 
   @Column()
-  artist: string; // Primary artist of the song
+  artist: string;
 
   @Column('simple-array')
-  featuredArtists: string[]; // List of featured artists, if any
+  featuredArtists: string[];
 
   @Column()
   album: string;
@@ -44,11 +46,16 @@ export class Audio {
   explicit: boolean;
 
   @Column({ type: 'simple-array', nullable: true })
-  genres: string[]; // Associated genres (e.g., "pop", "rock")
+  genres: string[];
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date; // When the entry was created
+  @Column({ type: 'int' })
+  songLength: number;
 
+  @Exclude()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 

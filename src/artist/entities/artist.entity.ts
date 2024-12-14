@@ -1,6 +1,13 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '@/auth/entities';
 import { Exclude } from 'class-transformer';
+import { SongGroup } from '@/audio/entities/song-group.entity';
 
 @Entity('artists')
 export class Artist {
@@ -19,4 +26,8 @@ export class Artist {
   @Exclude()
   @OneToOne(() => User, (user) => user.artist)
   user: User;
+
+  @Exclude()
+  @OneToMany(() => SongGroup, (g) => g.artist, { cascade: false })
+  songGroups: SongGroup[];
 }
