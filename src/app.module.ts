@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { SignModule } from './sign/sign.module';
 import { LibModule } from './lib/lib.module';
 import { AudioModule } from './audio/audio.module';
+import { ArtistModule } from './artist/artist.module';
 import typeorm from '@/config/typeorm';
 
 @Module({
@@ -27,6 +28,7 @@ import typeorm from '@/config/typeorm';
     SignModule,
     LibModule,
     AudioModule,
+    ArtistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

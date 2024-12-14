@@ -11,6 +11,7 @@ import { UserService } from '@/auth/services';
 import { AuthRequest } from '@/common/types';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '@/auth/decorators/public.decorator';
+import logger from '@/common/utils/logger';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -44,6 +45,7 @@ export class AuthGuard implements CanActivate {
 
       const user = await this.userService.db.findOne({
         where: { id: payload.id },
+        relations: ['artist'],
       });
 
       if (!user) {

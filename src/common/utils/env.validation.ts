@@ -8,6 +8,7 @@ import {
   validateSync,
   MinLength,
   MaxLength,
+  IsBoolean,
 } from 'class-validator';
 
 enum Environment {
@@ -57,6 +58,9 @@ class EnvironmentVariables {
 
   @IsString()
   DB_CA: string;
+
+  @IsBoolean()
+  DB_USE_SSL: boolean;
 
   @IsString()
   SPOTIFY_CLIENT_ID: string;

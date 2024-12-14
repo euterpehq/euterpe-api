@@ -1,30 +1,24 @@
 import {
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
   Entity,
   Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Group } from './group.entity';
-import { Audio } from '@/audio/entities/audio.entity';
+import { Artist } from '@/artist/entities/artist.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  artistName: string;
-
   @Index()
   @Column({ unique: true })
   email: string;
-
-  @Column({ unique: true })
-  profileBannerUrl: string;
 
   @Exclude()
   @Column({
@@ -65,9 +59,10 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Group, (group) => group.user)
-  groups: Group;
-
-  @OneToMany(() => Audio, (audio) => audio.user)
-  audios: Audio;
+  @OneToOne(() => Artist, (artist) => artist.user, {
+    cascade: true,
+    nullable: true,
+  })
+  @JoinColumn()
+  artist?: Artist;
 }

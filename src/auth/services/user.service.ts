@@ -13,9 +13,5 @@ export class UserService extends BaseService {
     super();
   }
 
-  public db = this.repo; 
-
-  async artistBio()
-
-
+  public db = this.repo;
 }

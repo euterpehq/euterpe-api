@@ -35,6 +35,6 @@ export class Group {
   @DeleteDateColumn({ nullable: true })
   deletedAt: Date | null;
 
-  @ManyToOne(() => User, (user) => user.groups)
-  user: User;
+  // @ManyToOne(() => User, (user) => user.groups)
+  // user: User;
 }

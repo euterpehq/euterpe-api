@@ -1,4 +1,17 @@
-import { IsEmail, IsString, IsUrl } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsUrl } from 'class-validator';
+
+class AuthArtist {
+  @IsString()
+  id: string;
+
+  @IsString()
+  @IsOptional()
+  bio?: string;
+
+  @IsString()
+  @IsOptional()
+  profileBannerUrl?: string;
+}
 
 class AuthUser {
   @IsString()
@@ -7,17 +20,13 @@ class AuthUser {
   @IsEmail()
   email: string;
 
-  @IsString()
-  bio: string;
-
-  @IsString()
-  pofileBannerimage: string;
-
   @IsUrl()
   profileImageUrl?: string;
 
   @IsString()
   lastLoginDate: Date;
+
+  artist?: AuthArtist;
 }
 
 export class AuthSignInResponse {
