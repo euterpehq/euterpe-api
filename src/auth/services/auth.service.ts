@@ -11,7 +11,6 @@ import { Profile } from 'passport-spotify';
 import { BaseService } from '@/common/service/base.service';
 import { CipherService } from '@/lib/services/crypto.service';
 import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@/lib/services/http.service';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -20,7 +19,6 @@ export class AuthService extends BaseService {
     private readonly jwtService: JwtService,
     private readonly cipherService: CipherService,
     private readonly configService: ConfigService,
-    private readonly httpService: HttpService,
   ) {
     super();
   }

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AudioService } from './audio.service';
-import { AudioController } from './audio.controller';
+import { AudioService } from './services';
+import { AudioController } from './controllers';
 import { AudioGroupController } from '@/audio/controllers/audio-group.controller';
 import { AudioGroupService } from '@/audio/services';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AudioGroup } from '@/audio/entities';
+import { Audio, AudioGroup } from '@/audio/entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AudioGroup])],
+  imports: [TypeOrmModule.forFeature([AudioGroup, Audio])],
   controllers: [AudioController, AudioGroupController],
   providers: [AudioService, AudioGroupService],
 })

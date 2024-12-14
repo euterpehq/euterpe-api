@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { User } from '@/auth/entities';
 import { Exclude } from 'class-transformer';
-import { AudioGroup } from '@/audio/entities';
+import { AudioGroup, Audio } from '@/audio/entities';
 
 @Entity('artists')
 export class Artist {
@@ -30,4 +30,8 @@ export class Artist {
   @Exclude()
   @OneToMany(() => AudioGroup, (g) => g.artist, { cascade: false })
   audioGroups: AudioGroup[];
+
+  @Exclude()
+  @OneToMany(() => Audio, (a) => a.artist, { cascade: false })
+  audios: Audio[];
 }
