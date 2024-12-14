@@ -18,6 +18,10 @@ const config = {
   migrations: ['dist/migrations/*{.ts,.js}'],
   autoLoadEntities: true,
   synchronize: false,
+  ssl: {
+    rejectUnauthorized: false,
+    ca: process.env.DB_CA,
+  },
 };
 
 export default registerAs('typeorm', () => config);
