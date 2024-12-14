@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate {
       });
 
       const user = await this.userService.db.findOne({
-        where: { id: payload.id },
+        where: { id: payload.sub },
         relations: ['artist'],
       });
 

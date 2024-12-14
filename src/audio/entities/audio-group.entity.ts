@@ -10,15 +10,16 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Artist } from '@/artist/entities/artist.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 export enum GroupType {
-  Single,
-  EP,
-  Album,
+  Single = 'single',
+  EP = 'ep',
+  Album = 'album',
 }
 
-@Entity('song_groups')
-export class SongGroup {
+@Entity('audio_groups')
+export class AudioGroup {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -39,18 +40,28 @@ export class SongGroup {
   @Column({ default: false })
   isListed: boolean;
 
+  @ApiHideProperty()
   @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiHideProperty()
   @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @ApiHideProperty()
+  @Exclude()
   @DeleteDateColumn({ nullable: true })
   deletedAt?: Date;
 
-  @ManyToOne(() => Artist, (artist) => artist.songGroups)
+  @ApiHideProperty()
+  @Exclude()
+  @ManyToOne(() => Artist, (artist) => artist.audioGroups)
   @JoinTable()
   artist: Artist;
+
+  constructor(partial: Partial<AudioGroup>) {
+    Object.assign(this, partial);
+  }
 }
