@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from '@/auth/services/auth.service';
 import { AuthController } from '@/auth/controllers/auth.controller';
 import { SpotifyStrategy } from '@/auth/strategies/spotify.strategy';
+import { ArtistModule } from '@/artist/artist.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { SpotifyStrategy } from '@/auth/strategies/spotify.strategy';
       global: true,
     }),
     PassportModule,
+    ArtistModule,
   ],
   providers: [
     UserService,
