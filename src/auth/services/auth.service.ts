@@ -11,6 +11,7 @@ import { Profile } from 'passport-spotify';
 import { BaseService } from '@/common/service/base.service';
 import { CipherService } from '@/lib/services/crypto.service';
 import { ConfigService } from '@nestjs/config';
+import { ArtistService } from '@/artist/services/artist.service';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -19,6 +20,7 @@ export class AuthService extends BaseService {
     private readonly jwtService: JwtService,
     private readonly cipherService: CipherService,
     private readonly configService: ConfigService,
+    private readonly artistService: ArtistService,
   ) {
     super();
   }
@@ -83,9 +85,18 @@ export class AuthService extends BaseService {
       await this.userService.db.save(user);
     }
 
-    return this.userService.db.findOneByOrFail({
-      email: user.email,
+    const existingUser = await this.userService.db.findOneOrFail({
+      where: {
+        email: user.email,
+      },
+      relations: ['artist'],
     });
+
+    if (!existingUser.artist) {
+      return this.#ensureArtist(existingUser, profile);
+    }
+
+    return existingUser;
   }
 
   async #getTokens(payload: {
@@ -127,8 +138,9 @@ export class AuthService extends BaseService {
     lastName?: string;
     profileImageUrl?: string;
   }): Promise<AuthSignInResponse> {
-    const existingUser = await this.userService.db.findOneBy({
-      email: input.email,
+    const existingUser = await this.userService.db.findOne({
+      where: { email: input.email },
+      relations: ['artist'],
     });
     if (existingUser) {
       throw new BadRequestException('User already exists');
@@ -175,5 +187,26 @@ export class AuthService extends BaseService {
     }
 
     return this.generateToken(user);
+  }
+
+  async #ensureArtist(user: User, profile: Profile): Promise<User> {
+    if (user.artist) {
+      return user;
+    }
+    const artist = this.artistService.db.create({
+      artistName: profile.displayName,
+      user: {
+        id: user.id,
+      },
+    });
+
+    await this.artistService.db.save(artist);
+
+    return this.userService.db.findOneOrFail({
+      where: {
+        id: user.id,
+      },
+      relations: ['artist'],
+    });
   }
 }
