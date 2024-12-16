@@ -45,7 +45,7 @@ export class AuthController {
     const refreshToken = encodeURIComponent(token.refreshToken);
 
     return res.redirect(
-      `${redirectUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}`,
+      `${redirectUrl}/auth?accessToken=${accessToken}&refreshToken=${refreshToken}`,
     );
   }
 
