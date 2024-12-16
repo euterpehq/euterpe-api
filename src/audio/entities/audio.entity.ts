@@ -1,17 +1,16 @@
-import { User } from '@/auth/entities';
+import { Artist } from '@/artist/entities/artist.entity';
+import { AudioGroup } from '@/audio/entities/audio-group.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import {
-  DeleteDateColumn,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  CreateDateColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
-import { ApiHideProperty } from '@nestjs/swagger';
-import { AudioGroup } from '@/audio/entities/audio-group.entity';
-import { Artist } from '@/artist/entities/artist.entity';
 
 @Entity('audios')
 export class Audio {
