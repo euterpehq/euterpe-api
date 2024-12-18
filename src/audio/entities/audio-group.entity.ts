@@ -27,12 +27,14 @@ export class AudioGroup {
   id: string;
 
   @Column({
-    unique: true,
     type: 'enum',
     enum: GroupType,
     default: GroupType.Single,
   })
   type: GroupType;
+
+  @Column()
+  title: string;
 
   @Column({ nullable: true })
   coverImageUrl?: string;
@@ -42,6 +44,12 @@ export class AudioGroup {
 
   @Column({ default: false })
   isListed: boolean;
+
+  @Column()
+  genre: string;
+
+  @Column()
+  subGenres: string[];
 
   @ApiHideProperty()
   @Exclude()

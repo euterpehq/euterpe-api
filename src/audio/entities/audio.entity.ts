@@ -7,11 +7,18 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
+export enum fileType {
+  WAV = 'WAV',
+  MP3 = 'MP3',
+  FLAC = 'FLAC',
+  AIFF = 'AIFF',
+  WMA = 'WMA',
+}
 @Entity('audios')
 export class Audio {
   @PrimaryGeneratedColumn('uuid')
@@ -23,8 +30,14 @@ export class Audio {
   @Column()
   title: string;
 
+  @Column({ unique: true, type: 'enum', enum: fileType })
+  fileType: fileType;
+
   @Column('simple-array')
   featuredArtists: string[];
+
+  @Column({ default: 1 })
+  trackNumber: number;
 
   // @Column()
   // album: string;
@@ -45,7 +58,7 @@ export class Audio {
   explicit: boolean;
 
   @Column({ type: 'simple-array', nullable: true })
-  genres: string[];
+  genre: string[];
 
   @ApiHideProperty()
   @Exclude()
@@ -62,6 +75,10 @@ export class Audio {
   @ApiHideProperty()
   @ManyToOne(() => Artist, (a) => a.audios)
   artist: Artist;
+
+  @ApiHideProperty()
+  @ManyToMany(() => Artist, (a) => a.audios)
+  featuredArtist: Artist[];
 
   @ApiHideProperty()
   @ManyToOne(() => AudioGroup, (g) => g.audios)
