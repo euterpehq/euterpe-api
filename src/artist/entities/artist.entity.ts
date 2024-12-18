@@ -20,6 +20,9 @@ export class Artist {
   @Column({ nullable: true })
   profileBannerUrl?: string;
 
+  @Column({ nullable: true })
+  spotifyId?: string;
+
   @Column({ nullable: true, type: 'text' })
   bio?: string;
 

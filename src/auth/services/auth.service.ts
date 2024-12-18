@@ -194,7 +194,8 @@ export class AuthService extends BaseService {
       return user;
     }
     const artist = this.artistService.db.create({
-      artistName: profile.displayName,
+      artistName: profile.username,
+      spotifyId: profile.id,
       user: {
         id: user.id,
       },
