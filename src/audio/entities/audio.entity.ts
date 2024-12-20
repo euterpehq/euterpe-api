@@ -24,38 +24,23 @@ export class Audio {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  spotifyId: string;
-
   @Column()
   title: string;
 
   @Column({ unique: true, type: 'enum', enum: fileType })
   fileType: fileType;
 
-  @Column('simple-array')
-  featuredArtists: string[];
-
   @Column({ default: 1 })
   trackNumber: number;
 
-  // @Column()
-  // album: string;
-  //
-  // @Column({ nullable: true })
-  // albumCoverUrl: string;
+  @Column({ nullable: true })
+  coverImageUrl: string;
 
   @Column({ nullable: true })
   releaseDate: string;
 
   @Column({ type: 'int', default: 0 })
   durationInSeconds: number;
-
-  @Column({ type: 'float', default: 0 })
-  popularity: number;
-
-  @Column({ type: 'boolean', default: false })
-  explicit: boolean;
 
   @Column({ type: 'simple-array', nullable: true })
   genre: string[];

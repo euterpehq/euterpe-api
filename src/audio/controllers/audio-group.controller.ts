@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Req,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { AudioGroupService } from '@/audio/services';
 import { AuthRequest } from '@/common/types';
 import { UpdateAudioGroupDto } from '@/audio/dto/update-audio-group.dto';
 import { AudioGroup } from '@/audio/entities';
+import { CreateAudioGroupDto } from '../dto/create-audio-group.dto';
 
 @Controller('audio-groups')
 export class AudioGroupController {
@@ -23,6 +25,9 @@ export class AudioGroupController {
     }
     return this.audioGroupService.getAllGroups(req.user.artist.id);
   }
+
+  @Post()
+  async Create(@Req() req: AuthRequest, @Body() input: CreateAudioGroupDto) {return this.audioGroupService.createGroup()}
 
   @Get(':id')
   findOne(

@@ -22,7 +22,7 @@ export class AudioGroupService extends BaseService {
 
   public db = this.repo;
 
-  async createGroup(input: CreateAudioGroupDto): Promise<AudioGroup> {
+  async createGroup(input: CreateAudioGroupDto) {
     const group = this.repo.create(input);
 
     return this.repo.save(group);
