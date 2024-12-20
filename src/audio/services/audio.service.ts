@@ -1,15 +1,22 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Artist } from '@/artist/entities';
 import { CreateAudioDto } from '@/audio/dto/create-audio.dto';
 import { UpdateAudioDto } from '@/audio/dto/update-audio.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Audio } from '@/audio/entities';
-import { IsNull, Repository } from 'typeorm';
+import { Audio, AudioGroup } from '@/audio/entities';
 import { BaseService } from '@/common/service/base.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IsNull, Repository } from 'typeorm';
+import { CreateAudioServiceDto } from '../dto/create-audio-group.dto';
 
 type UpdateAudio = {
   id: string;
   artistId: string;
 } & UpdateAudioDto;
+
+type CreateAudio = {
+  artist: Artist;
+  audioGroup: AudioGroup;
+} & CreateAudioServiceDto;
 
 @Injectable()
 export class AudioService extends BaseService {
@@ -22,7 +29,7 @@ export class AudioService extends BaseService {
 
   public db = this.repo;
 
-  create(input: CreateAudioDto): Promise<Audio> {
+  create(input: CreateAudio): Promise<Audio> {
     const audio = this.repo.create(input);
 
     return this.repo.save(audio);

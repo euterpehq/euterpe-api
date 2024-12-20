@@ -20,7 +20,6 @@ export enum GroupType {
   EP = 'ep',
   Album = 'album',
 }
-
 @Entity('audio_groups')
 export class AudioGroup {
   @PrimaryGeneratedColumn('uuid')

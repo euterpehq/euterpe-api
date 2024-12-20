@@ -37,7 +37,7 @@ export class Audio {
   coverImageUrl: string;
 
   @Column({ nullable: true })
-  releaseDate: string;
+  releaseDate: Date;
 
   @Column({ type: 'int', default: 0 })
   durationInSeconds: number;

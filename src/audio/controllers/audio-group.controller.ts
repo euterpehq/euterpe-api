@@ -27,7 +27,19 @@ export class AudioGroupController {
   }
 
   @Post()
-  async Create(@Req() req: AuthRequest, @Body() input: CreateAudioGroupDto) {return this.audioGroupService.createGroup()}
+  async Create(@Req() req: AuthRequest, @Body() input: CreateAudioGroupDto) {
+    await this.return;
+
+    this.audioGroupService.createGroup({
+      title: input.title,
+      coverImageUrl: input.coverImageUrl,
+      releaseDate: input.releaseDate,
+      genre: input.genre,
+      subGenres: input.subGenres,
+      artist: req.user.artist,
+      audios: input.audios,
+    });
+  }
 
   @Get(':id')
   findOne(
