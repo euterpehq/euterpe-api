@@ -14,9 +14,9 @@ type UpdateAudio = {
 } & UpdateAudioDto;
 
 type CreateAudio = {
-  artist: Artist;
+  artist: Artist | undefined;
   audioGroup: AudioGroup;
-} & CreateAudioServiceDto;
+} & CreateAudioDto;
 
 @Injectable()
 export class AudioService extends BaseService {
@@ -30,6 +30,7 @@ export class AudioService extends BaseService {
   public db = this.repo;
 
   create(input: CreateAudio): Promise<Audio> {
+    this.logger.log(input);
     const audio = this.repo.create(input);
 
     return this.repo.save(audio);

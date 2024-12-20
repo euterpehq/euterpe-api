@@ -1,5 +1,4 @@
-import { Artist } from '@/artist/entities';
-import { AudioGroup, fileType, GroupType } from '@/audio/entities';
+import { fileType, GroupType } from '@/audio/entities';
 import { OmitType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -8,9 +7,8 @@ import {
   IsDate,
   IsEnum,
   IsNumber,
-  IsObject,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from 'class-validator';
 
 export class AudioArray {
@@ -51,11 +49,11 @@ export class CreateAudioGroupDto {
   @IsDate()
   releaseDate?: Date;
 
-  @IsBoolean()
+  @IsBoolean({})
   isListed?: boolean;
 
   @IsString()
-  genre: string;
+  genre: string[];
 
   @IsArray()
   subGenres: string[];
@@ -63,7 +61,7 @@ export class CreateAudioGroupDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => AudioArray)
-  audios: AudioArray[];
+  audios: AudioArray;
 }
 
 export class CreateAudioServiceDto extends OmitType(CreateAudioGroupDto, [

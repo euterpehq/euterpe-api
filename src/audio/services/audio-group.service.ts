@@ -2,9 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Artist } from '@/artist/entities';
-import { AudioArray } from '@/audio/dto/create-audio-group.dto';
 import { UpdateAudioGroupDto } from '@/audio/dto/update-audio-group.dto';
-import { AudioGroup } from '@/audio/entities';
+import { AudioGroup, GroupType } from '@/audio/entities';
 import { BaseService } from '@/common/service/base.service';
 import { IsNull, Repository } from 'typeorm';
 
@@ -14,12 +13,12 @@ type UpdateGroupDto = {
 
 type CreateAudioGroup = {
   title: string;
+  type: GroupType;
   coverImageUrl?: string;
-  releaseDate: Date | undefined;
-  genre: string;
+  releaseDate?: Date | undefined;
+  genre: string[];
   subGenres: string[];
   artist: Artist | undefined;
-  audios: AudioArray;
 };
 
 @Injectable()
@@ -34,9 +33,7 @@ export class AudioGroupService extends BaseService {
   public db = this.repo;
 
   async createGroup(input: CreateAudioGroup) {
-    const group = this.repo.create(input);
-
-    return this.repo.save(group);
+    return this.repo.save(input);
   }
 
   async updateGroup(input: UpdateGroupDto): Promise<AudioGroup> {

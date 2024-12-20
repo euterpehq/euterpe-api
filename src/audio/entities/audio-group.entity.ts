@@ -45,7 +45,7 @@ export class AudioGroup {
   isListed: boolean;
 
   @Column()
-  genre: string;
+  genre: string[];
 
   @Column()
   subGenres: string[];

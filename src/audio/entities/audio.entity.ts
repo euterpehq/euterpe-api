@@ -59,7 +59,7 @@ export class Audio {
 
   @ApiHideProperty()
   @ManyToOne(() => Artist, (a) => a.audios)
-  artist: Artist;
+  artist: Artist | undefined;
 
   @ApiHideProperty()
   @ManyToMany(() => Artist, (a) => a.audios)
