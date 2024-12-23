@@ -6,7 +6,6 @@ import { BaseService } from '@/common/service/base.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
-import { CreateAudioServiceDto } from '../dto/create-audio-group.dto';
 
 type UpdateAudio = {
   id: string;

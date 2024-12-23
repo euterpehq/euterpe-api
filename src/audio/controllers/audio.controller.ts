@@ -1,26 +1,19 @@
+import { UpdateAudioDto } from '@/audio/dto/update-audio.dto';
+import { AudioService } from '@/audio/services/audio.service';
+import { AuthRequest } from '@/common/types';
 import {
   Body,
   Controller,
   Get,
   Param,
   Patch,
-  Post,
   Req,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AudioService } from '@/audio/services/audio.service';
-import { CreateAudioDto } from '@/audio/dto/create-audio.dto';
-import { UpdateAudioDto } from '@/audio/dto/update-audio.dto';
-import { AuthRequest } from '@/common/types';
 
 @Controller('audio')
 export class AudioController {
   constructor(private readonly audioService: AudioService) {}
-
-  @Post()
-  create(@Body() createAudioDto: CreateAudioDto) {
-    return this.audioService.create(createAudioDto);
-  }
 
   @Get()
   findManyArtistSong(@Req() req: AuthRequest) {

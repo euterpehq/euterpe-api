@@ -7,7 +7,8 @@ export function parseBool(value: any): boolean {
     const normalized = value.trim().toLowerCase();
     if (normalized === 'true') return true;
     if (normalized === 'false') return false;
+    if (normalized === '') return false; // Default to false for empty strings
   }
 
-  throw new Error(`Cannot parse value "${value}" as boolean.`);
+  return false; // Default to false for other invalid inputs
 }

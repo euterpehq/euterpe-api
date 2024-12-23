@@ -8,10 +8,10 @@ import {
   IsEnum,
   IsNumber,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from 'class-validator';
 
-export class AudioArray {
+export class AudioDto {
   @IsString()
   title: string;
 
@@ -60,8 +60,8 @@ export class CreateAudioGroupDto {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => AudioArray)
-  audios: AudioArray;
+  @Type(() => AudioDto)
+  audios: AudioDto[];
 }
 
 export class CreateAudioServiceDto extends OmitType(CreateAudioGroupDto, [

@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 export enum fileType {
   WAV = 'WAV',
   MP3 = 'MP3',
@@ -42,7 +43,7 @@ export class Audio {
   @Column({ type: 'int', default: 0 })
   durationInSeconds: number;
 
-  @Column({ type: 'simple-array', nullable: true })
+  @Column('json')
   genre: string[];
 
   @ApiHideProperty()

@@ -44,10 +44,10 @@ export class AudioGroup {
   @Column({ default: false })
   isListed: boolean;
 
-  @Column()
+  @Column('json')
   genre: string[];
 
-  @Column()
+  @Column('json')
   subGenres: string[];
 
   @ApiHideProperty()
